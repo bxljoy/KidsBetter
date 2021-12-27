@@ -6,27 +6,34 @@
 //
 
 import UIKit
+import CoreData
 
 class KidsTaskTableViewController: UITableViewController {
     
-    var tasks: [Task] = [
-        Task(title: "Phonics", isComplete: false, image: "Cafe Loisl"),
-        Task(title: "Swimming", isComplete: true, image: "Cafe Lore")
-    ]
+//    var tasks: [Task] = [
+//        Task(title: "Phonics", isComplete: false, image: "Cafe Loisl"),
+//        Task(title: "Swimming", isComplete: true, image: "Cafe Lore")
+//    ]
+    var tasks: [Task] = []
+    var fetchResultController: NSFetchedResultsController<Task>!
+    
+    @IBOutlet var emptyTaskView: UIView!
     
     lazy var dataSource = configureDataSource()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //fetch data
+        fetchTaskData()
+        
         // Set up the data source of the table view
         tableView.dataSource = dataSource
-        // Create a snapshot and populate the data
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Task>()
-        snapshot.appendSections([.taskItem])
-        snapshot.appendItems(tasks, toSection: .taskItem)
         
-        dataSource.apply(snapshot, animatingDifferences: false)
+        // Prepare the empty view
+        tableView.backgroundView = emptyTaskView
+        tableView.backgroundView?.isHidden = tasks.count == 0 ? false : true
+        
     }
     
     // MARK: - UITableView Diffable Data Source
@@ -47,7 +54,7 @@ class KidsTaskTableViewController: UITableViewController {
                 cell.completeButton.setImage(buttonImage, for: .normal)
                 let config = UIImage.SymbolConfiguration(paletteColors: buttonColor)
                 cell.completeButton.setPreferredSymbolConfiguration(config, forImageIn: .normal)
-                cell.taskImageView.image = UIImage(named: task.image)
+                cell.taskImageView.image = UIImage(data: task.image)
                 
                 return cell
             }
@@ -131,7 +138,45 @@ class KidsTaskTableViewController: UITableViewController {
             
         return swipeConfiguration
     }
+    
+    // MARK: - fetch data from database
+    func fetchTaskData() {
+        // Fetch data from data store
+        let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
+        let sortDescriptor = NSSortDescriptor(key: "title", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+            let context = appDelegate.persistentContainer.viewContext
+            fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+            fetchResultController.delegate = self
+            do {
+                try fetchResultController.performFetch()
+                updateSnapshot()
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    func updateSnapshot(animatingChange: Bool = false) {
+        if let fetchedObjects = fetchResultController.fetchedObjects {
+            tasks = fetchedObjects
+        }
+        // Create a snapshot and populate the data
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Task>()
+        snapshot.appendSections([.taskItem])
+        snapshot.appendItems(tasks, toSection: .taskItem)
+        dataSource.apply(snapshot, animatingDifferences: animatingChange)
+    }
 }
 
+extension KidsTaskTableViewController: NSFetchedResultsControllerDelegate
+ {
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        updateSnapshot()
+    }
+
+}
     
 
