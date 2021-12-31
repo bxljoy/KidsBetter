@@ -168,6 +168,11 @@ class KidsTaskTableViewController: UITableViewController {
         snapshot.appendItems(tasks, toSection: .taskItem)
         dataSource.apply(snapshot, animatingDifferences: animatingChange)
     }
+    
+    // MARK: - define an unwind segue
+    @IBAction func unwindToHome(segue: UIStoryboardSegue) {
+        dismiss(animated: true, completion: nil)
+    }
 }
 
 extension KidsTaskTableViewController: NSFetchedResultsControllerDelegate
