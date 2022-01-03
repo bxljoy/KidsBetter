@@ -17,6 +17,8 @@
 		CF0477CE2778F5DA00E54283 /* TaskDiffableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF0477CD2778F5DA00E54283 /* TaskDiffableDataSource.swift */; };
 		CF0477D02778F60300E54283 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF0477CF2778F60300E54283 /* Main.storyboard */; };
 		CF0477D22778F61B00E54283 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF0477D12778F61B00E54283 /* LaunchScreen.storyboard */; };
+		CF0C0A9E278360900041E035 /* NewTaskController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF0C0A9D278360900041E035 /* NewTaskController.swift */; };
+		CF0C0AA0278361ED0041E035 /* RoundedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF0C0A9F278361ED0041E035 /* RoundedTextField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		CF0477CD2778F5DA00E54283 /* TaskDiffableDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskDiffableDataSource.swift; sourceTree = "<group>"; };
 		CF0477CF2778F60300E54283 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		CF0477D12778F61B00E54283 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		CF0C0A9D278360900041E035 /* NewTaskController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskController.swift; sourceTree = "<group>"; };
+		CF0C0A9F278361ED0041E035 /* RoundedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedTextField.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +86,7 @@
 			children = (
 				CF0477CB2778F5CE00E54283 /* Task.swift */,
 				CF0477CD2778F5DA00E54283 /* TaskDiffableDataSource.swift */,
+				CF0C0A9F278361ED0041E035 /* RoundedTextField.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -90,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				CF0477C72778F57F00E54283 /* KidsTaskTableViewController.swift */,
+				CF0C0A9D278360900041E035 /* NewTaskController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -185,9 +191,11 @@
 				CF0477B72778B42200E54283 /* KidsBetter.xcdatamodeld in Sources */,
 				CF0477AD2778B42200E54283 /* AppDelegate.swift in Sources */,
 				CF0477CA2778F59D00E54283 /* TaskTableViewCell.swift in Sources */,
+				CF0C0A9E278360900041E035 /* NewTaskController.swift in Sources */,
 				CF0477AF2778B42200E54283 /* SceneDelegate.swift in Sources */,
 				CF0477CC2778F5CE00E54283 /* Task.swift in Sources */,
 				CF0477CE2778F5DA00E54283 /* TaskDiffableDataSource.swift in Sources */,
+				CF0C0AA0278361ED0041E035 /* RoundedTextField.swift in Sources */,
 				CF0477C82778F57F00E54283 /* KidsTaskTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
