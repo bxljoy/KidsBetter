@@ -9,6 +9,8 @@ import UIKit
 
 class NewTaskController: UITableViewController {
     
+    var task: Task!
+    
     @IBOutlet var photoImageView: UIImageView! {
         didSet {
             photoImageView.layer.cornerRadius = 10.0
@@ -65,6 +67,50 @@ class NewTaskController: UITableViewController {
             }
             present(photoSourceRequestController, animated: true, completion:nil)
         }
+    }
+    
+    @IBAction func saveButtonTapped(sender: AnyObject) {
+        var flag = true
+        if let title = titleTextField?.text {
+            if (title.count == 0) {
+                flag = false
+            }
+        }
+        if let description = descriptionTextField?.text {
+            if (description.count == 0) {
+                flag = false
+            }
+        }
+        
+        if(!flag) {
+            let alertMessage = "We can't proceed because one of the fields is blank. Please note that all fields are required."
+            let alert = UIAlertController(title: "Oops", message: alertMessage, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { _ in
+            NSLog("The \"OK\" alert occured.")
+            }))
+            self.present(alert, animated: true, completion: nil)
+        } else {
+            if let title = titleTextField?.text {
+                print("Title: " + title)
+            }
+            if let description = descriptionTextField?.text {
+                print("Description: " + description)
+            }
+            
+            if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+                task = Task(context: appDelegate.persistentContainer.viewContext)
+                task.title = titleTextField.text!
+                task.isComplete = false
+                if let imageData = photoImageView.image?.pngData() {
+                    task.image = imageData
+                }
+                print("Saving data to context...")
+                appDelegate.saveContext()
+            }
+            
+            dismiss(animated: true, completion: nil)
+        }
+        
     }
 
     override func viewDidLoad() {

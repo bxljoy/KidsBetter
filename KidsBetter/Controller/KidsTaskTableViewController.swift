@@ -10,10 +10,6 @@ import CoreData
 
 class KidsTaskTableViewController: UITableViewController {
     
-//    var tasks: [Task] = [
-//        Task(title: "Phonics", isComplete: false, image: "Cafe Loisl"),
-//        Task(title: "Swimming", isComplete: true, image: "Cafe Lore")
-//    ]
     var tasks: [Task] = []
     var fetchResultController: NSFetchedResultsController<Task>!
     
@@ -27,12 +23,12 @@ class KidsTaskTableViewController: UITableViewController {
         //fetch data
         fetchTaskData()
         
-        // Set up the data source of the table view
-        tableView.dataSource = dataSource
-        
         // Prepare the empty view
         tableView.backgroundView = emptyTaskView
         tableView.backgroundView?.isHidden = tasks.count == 0 ? false : true
+        
+        // Set up the data source of the table view
+        tableView.dataSource = dataSource
         
     }
     
@@ -79,6 +75,12 @@ class KidsTaskTableViewController: UITableViewController {
             let config = UIImage.SymbolConfiguration(paletteColors: buttonColor)
             cell.completeButton.setPreferredSymbolConfiguration(config, forImageIn: .normal)
             
+            if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+                appDelegate.saveContext()
+                // Update the view
+                self.updateSnapshot(animatingChange: true)
+            }
+            
             // Call completion handler to dismiss the action button
             completionHandler(true)
         }
@@ -104,7 +106,8 @@ class KidsTaskTableViewController: UITableViewController {
             
             let cell = tableView.cellForRow(at: indexPath) as! TaskTableViewCell
             
-            self.tasks[indexPath.row].isComplete = false
+            self.tasks[indexPath.row].isComplete = true
+            
             //display the buttonImage
             let buttonImage = UIImage(systemName: "checkmark.circle.fill")
             // configure the SF Symbol 3 Color
@@ -113,6 +116,12 @@ class KidsTaskTableViewController: UITableViewController {
             let config = UIImage.SymbolConfiguration(paletteColors: buttonColor)
             cell.completeButton.setPreferredSymbolConfiguration(config, forImageIn: .normal)
             
+            if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+                appDelegate.saveContext()
+                // Update the view
+                self.updateSnapshot(animatingChange: true)
+            }
+            
             // Call completion handler to dismiss the action button
             completionHandler(true)
         }
@@ -120,9 +129,14 @@ class KidsTaskTableViewController: UITableViewController {
         // Delete action
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, sourceView, completionHandler) in
             
-            var snapshot = self.dataSource.snapshot()
-            snapshot.deleteItems([task])
-            self.dataSource.apply(snapshot, animatingDifferences: true)
+            if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+                let context = appDelegate.persistentContainer.viewContext
+                // Delete the item
+                context.delete(task)
+                appDelegate.saveContext()
+                // Update the view
+                self.updateSnapshot(animatingChange: true)
+            }
             
             // Call completion handler to dismiss the action button
             completionHandler(true)

@@ -205,7 +205,11 @@
                                 <segue destination="RlP-hp-3w3" kind="unwind" unwindAction="unwindToHomeWithSegue:" id="i8b-fF-46c"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Save" id="zTk-P1-M5F"/>
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="zTk-P1-M5F">
+                            <connections>
+                                <action selector="saveButtonTappedWithSender:" destination="zS8-qX-fZT" id="Cxi-fX-6Ef"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
